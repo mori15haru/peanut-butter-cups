@@ -7,5 +7,6 @@ puts 'Initial state: ' + game.to_s
 
 5.times{
   game.update_cells
+  puts "NEXT..."
   puts game.to_s
 }
