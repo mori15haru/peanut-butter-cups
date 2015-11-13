@@ -15,6 +15,7 @@ class Position
   def +(other)
     Position.new([@x + other.x, @y + other.y])
   end
+
 end
 
 class Cell
@@ -28,11 +29,8 @@ class Cell
     @pos   = Position.new(pos)
   end
 
-  def update_number_of_neighbors(n)
-    @n_neighbors = n
-  end
-
-  def update_state
+  def update_state(n_neighbors)
+    @n_neighbors = n_neighbors
     if @state == CellState::ALIVE
       update_alive_cell
     else
@@ -53,7 +51,12 @@ class Cell
 end
 
 class GameOfLife
-  @@offsets = [-1, 0, 1].repeated_permutation(2).to_a.delete_if{|p| p == [0, 0]}.map{|pos| Position.new(pos)}
+  @@offsets = 
+    [-1, 0, 1]
+    .repeated_permutation(2)
+    .to_a
+    .delete_if{|p| p == [0, 0]}
+    .map{|p| Position.new(p)}
 
   attr_accessor :cands, :alive_cells
 
@@ -74,31 +77,28 @@ class GameOfLife
 
   private
 
-  def update_cells
-    current_alive_cells_map = alive_cells_map.clone
-    @cands.each do |cell|
-      cell.update_number_of_neighbors(number_of_alive_neighbors(cell, current_alive_cells_map))
-      cell.update_state
-    end
+  def update_cells 
+    @cands.each{|cell| cell.update_state(get_number_of_alive_neighbors(cell))}
   end
 
   def get_dead_cands
     alive_cells_pos
       .product(@@offsets)
-      .map{|cand, offset| (cand + offset).p}
+      .map{|cand, offset| cand + offset}
+      .map{|pos| pos.p}
       .uniq
-      .select{|pos| !alive_cells_map.include?(pos)}
-      .map{|pos| Cell.new(CellState::DEAD, pos)}
+      .select{|p| !alive_cells_map.include?(p)}
+      .map{|p| Cell.new(CellState::DEAD, p)}
   end
 
   def set_cands
     @cands = alive_cells + get_dead_cands
   end
 
-  def number_of_alive_neighbors(cell, current_alive_cells_map)
+  def get_number_of_alive_neighbors(cell)
     @@offsets
       .map{|offset| cell.pos + offset}
-      .select{|c| current_alive_cells_map.include?(c.p)}
+      .select{|pos| alive_cells_map.include?(pos.p)}
       .count
   end
 
