@@ -21,7 +21,7 @@ class Cell
   ALIVE_TO_ALIVE = [2, 3]
   DEAD_TO_ALIVE  = 3
 
-  attr_accessor :x, :y, :pos, :state, :n_neighbors
+  attr_accessor :pos, :state, :n_neighbors
 
   def initialize(state, pos)
     @state = state
@@ -55,23 +55,17 @@ end
 class GameOfLife
   @@offsets = [-1, 0, 1].repeated_permutation(2).to_a.delete_if{|p| p == [0, 0]}.map{|pos| Position.new(pos)}
 
-  attr_accessor :cands
+  attr_accessor :cands, :alive_cells
 
   def initialize(initial_alive_cells)
-    @cands = initial_alive_cells
+    @alive_cells = initial_alive_cells
+    @cands = nil
   end
 
-  def update_cells
-    update_cands 
-    current_alive_cells_map = alive_cells_map.clone
-    @cands.each do |cell|
-      cell.update_number_of_neighbors(number_of_alive_neighbors(cell, current_alive_cells_map))
-      cell.update_state
-    end
-  end
-
-  def alive_cells_map
-    alive_cells.map.map{|c| c.pos.p}
+  def update
+    set_cands
+    update_cells
+    set_alive_cells
   end
 
   def to_s
@@ -80,29 +74,44 @@ class GameOfLife
 
   private
 
-  def semi_cands
-    @cands.map{|c| c.pos}.product(@@offsets).map{|cand, offset| cand + offset}
-  end
-
-  def update_cands
-    #1. Candidates currently alive
-    @cands = alive_cells
-    #2.  Candidates currently dead
-    dead_cands = []
-    semi_cands.each do |cand_pos|
-      if !alive_cells_map.include?(cand_pos.p) && !dead_cands.map{|c| c.pos.p}.include?(cand_pos.p)
-        dead_cands << Cell.new(CellState::DEAD, cand_pos.p) 
-      end
+  def update_cells
+    current_alive_cells_map = alive_cells_map.clone
+    @cands.each do |cell|
+      cell.update_number_of_neighbors(number_of_alive_neighbors(cell, current_alive_cells_map))
+      cell.update_state
     end
-    @cands += dead_cands
   end
 
-  def alive_cells
-    @cands.select{|c| c.state == CellState::ALIVE}
+  def get_dead_cands
+    alive_cells_pos
+      .product(@@offsets)
+      .map{|cand, offset| (cand + offset).p}
+      .uniq
+      .select{|pos| !alive_cells_map.include?(pos)}
+      .map{|pos| Cell.new(CellState::DEAD, pos)}
+  end
+
+  def set_cands
+    @cands = alive_cells + get_dead_cands
   end
 
   def number_of_alive_neighbors(cell, current_alive_cells_map)
-    @@offsets.map{|offset| cell.pos + offset}.select{|c| current_alive_cells_map.include?(c.p)}.count
+    @@offsets
+      .map{|offset| cell.pos + offset}
+      .select{|c| current_alive_cells_map.include?(c.p)}
+      .count
+  end
+
+  def alive_cells_pos
+    @alive_cells.map{|c| c.pos}
+  end
+
+  def alive_cells_map
+    @alive_cells.map{|c| c.pos.p}
+  end
+
+  def set_alive_cells
+    @alive_cells = @cands.select{|c| c.state == CellState::ALIVE}
   end
 
 end

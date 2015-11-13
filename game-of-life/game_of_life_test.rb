@@ -6,7 +6,7 @@ game = GameOfLife.new([c1,c2,c3])
 puts 'Initial state: ' + game.to_s
 
 5.times{
-  game.update_cells
+  game.update
   puts "NEXT..."
   puts game.to_s
 }
