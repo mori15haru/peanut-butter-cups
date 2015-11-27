@@ -7,3 +7,5 @@ Usage:
   ruby game_of_life_sim.rb blinker
   ruby game_of_life_sim.rb toad
   ruby game_of_life_sim.rb beacon
+
+SPACE_BAR will update the generation.
