@@ -43,8 +43,7 @@ class SimWindow < Gosu::Window
     super @@w, @@h
     self.caption = "Ruby :: Gosu :: Game of Life"
 
-    @cells = CellPattern.blinker
-    #self.send(pattern)
+    @cells = CellPattern.send(pattern)
     self.generate_cells
   end
 
