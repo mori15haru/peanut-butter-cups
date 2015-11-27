@@ -1,0 +1,9 @@
+Game of Life simulation using Gosu
+  
+Pattern description:
+  https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns
+
+Usage:
+  ruby game_of_life_sim.rb blinker
+  ruby game_of_life_sim.rb toad
+  ruby game_of_life_sim.rb beacon
