@@ -75,5 +75,5 @@ class SimWindow < Gosu::Window
 
 end
 
-window = SimWindow.new('beacon')
+window = SimWindow.new(ARGV[0].to_s)
 window.show
