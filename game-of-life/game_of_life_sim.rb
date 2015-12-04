@@ -7,7 +7,8 @@ class SimWindow < Gosu::Window
 
   @@w = 640
   @@h = 480
-  
+  @@zoom = 10.0
+
   def initialize(pattern)
     super @@w, @@h
     self.caption = "Ruby :: Gosu :: Game of Life"
@@ -26,7 +27,7 @@ class SimWindow < Gosu::Window
 
   def draw
     @cells.each do |cell|
-      Gosu::draw_rect(10.0*cell.pos.x, 10.0*cell.pos.y, 10, 10, Gosu::Color::WHITE)
+      Gosu::draw_rect(@@zoom*cell.pos.x, @@zoom*cell.pos.y, @@zoom , @@zoom, Gosu::Color::WHITE)
     end
   end
 
