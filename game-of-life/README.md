@@ -1,7 +1,7 @@
 #Game of Life
-##Usage:
+##Run:
 `ruby game_of_life_sim.rb [pattern]`
-##Pattens:
+##Patterns:
 - Still lifes: block
 - Oscillator: blinker, toad, beacon
 - Spaceships: glinder
