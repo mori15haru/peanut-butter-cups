@@ -1,4 +1,4 @@
-#Simulate Game of Life in Ruby using Gosu
+#Game of Life
 ##Usage:
 `ruby game_of_life_sim.rb [pattern]`
 ##Pattens:
