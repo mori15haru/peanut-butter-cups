@@ -5,5 +5,6 @@
 - Still lifes: block
 - Oscillator: blinker, toad, beacon
 - Spaceships: glinder
+- gosper glider gun
 
 https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
