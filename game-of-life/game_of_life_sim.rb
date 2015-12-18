@@ -3,11 +3,43 @@ require './game_of_life'
 require './cell'
 require './cell_pattern'
 
+module Update
+
+  def update
+    @game.update
+    @cells = @game.alive_cells
+  end
+
+  def button_down(id)
+    if id == Gosu::KbEscape
+      close
+    end
+  end
+
+end
+
+module UpdateManual
+
+  def upadte_cells
+    @game.update
+    @cells = @game.alive_cells
+  end
+
+  def button_down(id)
+    if id == Gosu::KbEscape
+      close
+    elsif id == Gosu::KbSpace
+      upadte_cells
+    end
+  end
+
+end
+
 class SimWindow < Gosu::Window
 
   @@w = 640
   @@h = 480
-  @@zoom = 10.0
+  @@zoom = 5.0
 
   def initialize(pattern)
     super @@w, @@h
@@ -15,14 +47,6 @@ class SimWindow < Gosu::Window
 
     @cells = CellPattern.send(pattern)
     self.generate_cells
-  end
-
-  def update
-  end 
-
-  def update_cells
-    @game.update
-    @cells = @game.alive_cells 
   end
 
   def draw
@@ -35,15 +59,4 @@ class SimWindow < Gosu::Window
     @game = GameOfLife.new(@cells)
   end
 
-  def button_down(id)
-    if id == Gosu::KbEscape
-      close
-    elsif id == Gosu::KbSpace
-      update_cells
-    end
-  end
-
 end
-
-window = SimWindow.new(ARGV[0].to_s)
-window.show
