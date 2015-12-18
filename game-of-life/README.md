@@ -2,7 +2,7 @@
 
 ##Run:
 - `ruby game_of_life_sim.rb [pattern]`
-- `space` key updates the generation.
+- `SPACE` key updates the generation.
 
 ##Patterns:
 - **Still lifes**: *block*
