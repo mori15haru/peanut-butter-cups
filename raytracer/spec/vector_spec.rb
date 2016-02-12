@@ -2,9 +2,9 @@ require 'spec_helper'
 require './vector'
 
 describe Vec do
-  v = Vec.new([2,8,1])
-  u = Vec.new([5,-4,7])
-  k = 2
+  let(:v) { Vec.new([2,8,1]) }
+  let(:u) { Vec.new([5,-4,7]) }
+  let(:k) { 2 }
 
   describe '.x' do
     it 'returns x coordinate' do
