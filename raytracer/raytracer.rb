@@ -17,15 +17,7 @@ module RayTracer
   def ray_traycer(ray, depth)
 
     object = ray.visible_object(objects)
-
-    if object #not nil
-      if ray.in_shadow?
-      else
-      end
-    else
-    end
   end
-
 end
 
 class Light

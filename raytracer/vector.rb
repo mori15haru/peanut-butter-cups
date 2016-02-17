@@ -36,7 +36,7 @@ class Vec
   end
   # |A|
   def abs
-    Math::sqrt(inner_prod(self))  
+    Math::sqrt(square_length)  
   end
   alias_method :length, :abs
   # A .* B
@@ -50,5 +50,9 @@ class Vec
     c =  x*other.y - y*other.x 
 
     Vec.new([a,b,c])
+  end
+  # |A|**2
+  def square_length
+    inner_prod(self)
   end
 end

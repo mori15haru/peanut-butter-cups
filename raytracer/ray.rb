@@ -6,8 +6,28 @@ class Ray
     @dir = dir
   end
 
-  def intersect(objects)
-    objects.min_by { |obj| obj.intersect(self) } # should ignore nil
+  def self.pixel_ray(i, j)
+    from = Vec.new([0,0,-500])
+    to = Vec.new([i,j,0])
+
+    dir = to - from
+    Ray.new(from, dir)
+  end
+
+  def intersects(objects)
+    intersection = objects.inject([nil, Float::INFINITY]) do |pair, obj|
+      t = obj.intersects(self)
+      if pair.last > t 
+        pair = [obj, t]
+      end 
+      pair
+    end
+
+    nvl(intersection, Float::INFINITY)
+  end
+
+  def nvl(val, nvl)
+    val.last == nvl ? nil : val.first
   end
 end
 

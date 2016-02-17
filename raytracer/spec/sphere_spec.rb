@@ -12,8 +12,8 @@ describe Sphere do
     end
   end
 
-  describe '#intersect' do
-    subject { sphere.intersect(ray) }
+  describe '#intersects' do
+    subject { sphere.intersects(ray) }
     
     let(:ray) { Ray.new(org, dir) }
     let(:org) { Vec.new([0,0,0]) }
@@ -29,7 +29,7 @@ describe Sphere do
       end
       
       context 'infront of the ray' do
-        it 'returns the distance' do
+        it 'returns the minimum positive...' do
           expect(subject).to eq(40)
         end
       end
