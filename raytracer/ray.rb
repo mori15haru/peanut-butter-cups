@@ -1,9 +1,16 @@
+require './one_light'
+
 class Ray
   attr_accessor :org, :dir
 
   def initialize(org, dir)
     @org = org
-    @dir = dir
+    @dir = dir.normalise
+  end
+
+  def self.get(v, u)
+    dir = u - v
+    return Ray.new(v, dir) 
   end
 
   def self.pixel_ray(i, j)
@@ -27,8 +34,12 @@ class Ray
   end
 
   def nvl(val, nvl)
-    val.last == nvl ? nil : val.first
+    val.last == nvl ? nil : [val.first, org + dir * val.last] 
   end
-end
+  
+  def in_shadow?(objects)
+    objects.any? { |obj| obj.intersects(self) != Float::INFINITY }    
+  end
 
+end
 

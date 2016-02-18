@@ -7,7 +7,7 @@ class Sphere
   def initialize(centre)
     @colour = Colour.new(Colour::BLUE)
     @centre = Vec.new(centre) 
-    @r = 10
+    @r = 30
   end
 
   def intersects(ray)
@@ -22,4 +22,5 @@ class Sphere
 
     QuadraticEquation::Sphere::solve(a,b,c)
   end
+
 end
