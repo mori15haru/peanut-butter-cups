@@ -7,7 +7,7 @@ class Sphere
   def initialize(centre)
     @colour = Colour.new(Colour::BLUE)
     @centre = Vec.new(centre)
-    @r = 30
+    @r = 10
   end
 
   def intersects(ray)

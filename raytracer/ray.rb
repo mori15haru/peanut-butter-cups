@@ -26,8 +26,9 @@ class Ray
       t = obj.intersects(self)
       if pair.last > t
         pair = [obj, t]
+      else
+        pair
       end
-      pair
     end
 
     nvl(intersection, Float::INFINITY)

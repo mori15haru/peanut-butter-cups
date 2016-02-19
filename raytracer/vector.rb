@@ -8,7 +8,6 @@ class Vec
     @arr = arr
     @x, @y, @z = arr
   end
-
   # -A
   def -@
     self*-1
