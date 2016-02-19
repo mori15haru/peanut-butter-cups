@@ -41,5 +41,9 @@ class Ray
     objects.any? { |obj| obj.intersects(self) != Float::INFINITY }    
   end
 
+  def in_shadow_temp(object)
+    object.intersects_temp(self)    
+  end
+
 end
 

@@ -1,9 +1,11 @@
-require 'gosu'
+require 'rmagick'
 
 require './colour'
 require './sphere'
 require './ray'
 require './one_light'
+
+include Magick
 
 ###################################
 # One light source
@@ -22,7 +24,7 @@ class RayTracer
     Sphere.new([50,50,50]),
     Sphere.new([-100,100,100])
   ]
-  
+
   @@pixels = Array.new(W) {
     Array.new(H, BACKGROUND)
   }
@@ -43,13 +45,16 @@ class RayTracer
 
     if intersection 
       shadow_ray = Ray.get(intersection.last, OneLight.org)
-      if !shadow_ray.in_shadow?(@@objects)
+      temp = shadow_ray.in_shadow_temp(intersection.first) 
+      if temp != nil && temp > 0
+        return SHADOW
+      elsif !shadow_ray.in_shadow?(@@objects.reject{|obj| obj == intersection.first})
         return intersection.first.colour * OneLight::intensity
       else
         return SHADOW
       end
     end
-    
+
     return BACKGROUND
   end
 
@@ -60,31 +65,23 @@ if __FILE__ == $0
   RayTracer.render
 end
 =end
+if __FILE__ == $0
+  image = Image.new(400, 400)
+  pixels = RayTracer.render
 
-class SimWindow < Gosu::Window
-  @@w = 400 
-  @@h = 400
-  def initialize(n)
-    super @@w, @@h
-    self.caption = "Ruby :: Gosu :: Raytracer :: Ambient"
-    @pixels = RayTracer.render  
-  end
-
-  def update
-  end
-
-  def draw
-   @pixels.each_with_index do |pix_arr, i|
-      pix_arr.each_with_index do |pix, j| 
-        Gosu::draw_rect(j, i, 1, 1, Gosu::Color.rgb(pix.x, pix.y, pix.z))
-      end
+  pixels.each_with_index do |pix_arr, i|
+    pix_arr.each_with_index do |pix, j| 
+      draw = Draw.new
+      draw.fill = Pixel.new(
+        pix.x * QuantumRange,
+        pix.y * QuantumRange,
+        pix.z * QuantumRange
+      )
+      draw.point(j,i)
+      draw.draw(image)
     end
   end
 
-end
-
-if __FILE__ == $0
-  window = SimWindow.new(ARGV[0].to_i)
-  window.show
+  image.write('result.jpg')
 end
 
