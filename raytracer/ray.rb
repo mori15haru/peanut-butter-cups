@@ -17,10 +17,11 @@ class Ray
   def intersects(objects)
     intersection = objects.inject([nil, Float::INFINITY]) do |pair, obj|
       t = obj.intersects(self)
-      if pair.last > t 
+      if pair.last > t
         pair = [obj, t]
-      end 
-      pair
+      else
+        pair
+      end
     end
 
     nvl(intersection, Float::INFINITY)
