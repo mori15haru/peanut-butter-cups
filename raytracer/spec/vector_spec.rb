@@ -26,7 +26,7 @@ describe Vec do
 
   describe '-@' do
     let(:result) { -v }
-    
+
     it 'returns the negation' do
       expect(result.arr).to eq([-2,-8,-1])
     end
@@ -34,7 +34,7 @@ describe Vec do
 
   describe '+(other)'do
     let(:result) { v + u }
-    
+
     it 'adds other to self in element-wise' do
       expect(result.arr).to eq([7,4,8])
     end
@@ -42,7 +42,7 @@ describe Vec do
 
   describe '-(other)'do
     let(:result) { v - u }
-    
+
     it 'substract other from self' do
       expect(result.arr).to eq([-3,12,-6])
     end
@@ -50,7 +50,7 @@ describe Vec do
 
   describe '*(other)'do
     let(:result) { v * k }
-    
+
     context 'with a scalar value' do
       it 'multiplies each value by other' do
         expect(result.arr).to eq([4,16,2])
@@ -59,7 +59,7 @@ describe Vec do
 
     context 'with another vector' do
       let(:result) { v * u }
-      
+
       it 'multiplies in element-wise' do
         expect(result.arr).to eq([10,-32,7])
       end
@@ -74,7 +74,7 @@ describe Vec do
     end
   end
 
-  describe 'abs'do
+  describe '#abs'do
     let(:result_abs) { v.abs }
     let(:result_length) { v.length }
 
@@ -84,19 +84,27 @@ describe Vec do
     end
   end
 
-  describe 'inner_prod'do
+  describe '#inner_prod'do
     let(:result) { v.inner_prod(u) }
-    
+
     it 'returns the inner product with other' do
-      expect(result).to eq(-15)    
+      expect(result).to eq(-15)
     end
   end
 
-  describe 'outer_prod'do
+  describe '#outer_prod'do
     let(:result) { v.outer_prod(u) }
 
     it 'returns the outer product with other' do
       expect(result.arr).to eq([60,-9,-48])
+    end
+  end
+
+  describe '#square_length' do
+    let(:result) { v.square_length }
+
+    it 'returns the square of the length' do
+      expect(result).to eq(69)
     end
   end
 

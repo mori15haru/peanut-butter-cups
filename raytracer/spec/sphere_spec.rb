@@ -14,20 +14,20 @@ describe Sphere do
 
   describe '#intersects' do
     subject { sphere.intersects(ray) }
-    
+
     let(:ray) { Ray.new(org, dir) }
     let(:org) { Vec.new([0,0,0]) }
     let(:dir) { Vec.new([1,0,0]) }
-    
+
     context 'intersects with the ray' do
       context 'behind the ray' do
         let(:centre) { [-50,0,0] }
-        
+
         it 'returns the infinity' do
           expect(subject).to eq(Float::INFINITY)
         end
       end
-      
+
       context 'infront of the ray' do
         it 'returns the minimum positive...' do
           expect(subject).to eq(40)
