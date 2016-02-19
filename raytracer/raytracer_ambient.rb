@@ -1,10 +1,8 @@
-require 'rmagick'
+require 'gosu'
 
 require './colour'
 require './sphere'
 require './ray'
-
-include Magick
 
 ###################################
 # Ambient light only
@@ -55,22 +53,29 @@ class RayTracer
 
 end
 
-if __FILE__ == $0
-  image = Image.new(200, 200)
-  pixels = RayTracer.render
+class SimWindow < Gosu::Window
+  @@w = 200
+  @@h = 200
+  def initialize(n)
+    super @@w, @@h
+    self.caption = "Ruby :: Gosu :: Raytracer :: Ambient"
+    @pixels = RayTracer.render
+  end
 
-  pixels.each_with_index do |pix_arr, i|
-    pix_arr.each_with_index do |pix, j|
-      draw = Draw.new
-      draw.fill = Pixel.new(
-        pix.x * QuantumRange,
-        pix.y * QuantumRange,
-        pix.z * QuantumRange
-      )
-      draw.point(j,i)
-      draw.draw(image)
+  def update
+  end
+
+  def draw
+    @pixels.each_with_index do |pix_arr, i|
+      pix_arr.each_with_index do |pix, j|
+        Gosu::draw_rect(j, i, 1, 1, Gosu::Color.rgb(pix.x, pix.y, pix.z))
+      end
     end
   end
 
-  image.write('result.jpg')
+end
+
+if __FILE__ == $0
+  window = SimWindow.new(ARGV[0].to_i)
+  window.show
 end
