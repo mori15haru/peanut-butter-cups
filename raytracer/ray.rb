@@ -10,7 +10,7 @@ class Ray
 
   def self.get(v, u)
     dir = u - v
-    return Ray.new(v, dir) 
+    return Ray.new(v, dir)
   end
 
   def self.pixel_ray(i, j)
@@ -24,9 +24,9 @@ class Ray
   def intersects(objects)
     intersection = objects.inject([nil, Float::INFINITY]) do |pair, obj|
       t = obj.intersects(self)
-      if pair.last > t 
+      if pair.last > t
         pair = [obj, t]
-      end 
+      end
       pair
     end
 
@@ -34,15 +34,15 @@ class Ray
   end
 
   def nvl(val, nvl)
-    val.last == nvl ? nil : [val.first, org + dir * val.last] 
+    val.last == nvl ? nil : [val.first, org + dir * val.last]
   end
-  
+
   def in_shadow?(objects)
-    objects.any? { |obj| obj.intersects(self) != Float::INFINITY }    
+    objects.any? { |obj| obj.intersects(self) != Float::INFINITY }
   end
 
   def in_shadow_temp(object)
-    object.intersects_temp(self)    
+    object.intersects_temp(self)
   end
 
 end

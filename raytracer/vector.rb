@@ -22,7 +22,7 @@ class Vec
     self + (-other)
   end
   # A * B
-  # A * k 
+  # A * k
   def *(other)
     if other.is_a?(Numeric)
       Vec.new(arr.map{|e| e*other})
@@ -36,7 +36,7 @@ class Vec
   end
   # |A|
   def abs
-    Math::sqrt(square_length)  
+    Math::sqrt(square_length)
   end
   alias_method :length, :abs
   # A . B
@@ -47,7 +47,7 @@ class Vec
   def outer_prod(other)
     a =  y*other.z - z*other.y
     b = -x*other.z + z*other.x
-    c =  x*other.y - y*other.x 
+    c =  x*other.y - y*other.x
 
     Vec.new([a,b,c])
   end
@@ -57,6 +57,6 @@ class Vec
   end
   # A/|A|
   def normalise
-    self / self.abs 
+    self / self.abs
   end
 end

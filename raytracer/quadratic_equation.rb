@@ -4,7 +4,7 @@ module QuadraticEquation
     def self.real_solutions(a,b,d)
       t1 = (-b + Math::sqrt(d))/a
       t2 = (-b - Math::sqrt(d))/a
-      
+
       return t1, t2
     end
 
@@ -43,7 +43,7 @@ module QuadraticEquation
       d = b**2 - a*c
 
       if a == 0 || d < 0
-        return nil 
+        return nil
       end
 
       t1, t2 = self.real_solutions(a,b,d)
@@ -65,7 +65,7 @@ module QuadraticEquation
         elsif [t1, t2].sort.min == 0
           return 1
         end
-      end 
+      end
 
       return nil
     end

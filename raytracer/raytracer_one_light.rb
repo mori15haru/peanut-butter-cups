@@ -15,8 +15,8 @@ class RayTracer
 
   W = 400
   H = 400
-  MAX_RAY_DEPTH = 5 
-  BACKGROUND = Colour.new(Colour::GREY) 
+  MAX_RAY_DEPTH = 5
+  BACKGROUND = Colour.new(Colour::GREY)
   SHADOW = Colour.new(Colour::BLACK)
 
   @@objects = [
@@ -29,10 +29,10 @@ class RayTracer
     Array.new(H, BACKGROUND)
   }
 
-  def self.render   
+  def self.render
     @@pixels.each_with_index do |pix_arr, i|
-      pix_arr.each_index do |j| 
-        ray = Ray.pixel_ray(j-W/2, -i+H/2) 
+      pix_arr.each_index do |j|
+        ray = Ray.pixel_ray(j-W/2, -i+H/2)
         @@pixels[i][j] = ray_tracer(ray)
       end
     end
@@ -43,9 +43,9 @@ class RayTracer
   def self.ray_tracer(ray)
     intersection = ray.intersects(@@objects)
 
-    if intersection 
+    if intersection
       shadow_ray = Ray.get(intersection.last, OneLight.org)
-      temp = shadow_ray.in_shadow_temp(intersection.first) 
+      temp = shadow_ray.in_shadow_temp(intersection.first)
       if temp != nil && temp > 0
         return SHADOW
       elsif !shadow_ray.in_shadow?(@@objects.reject{|obj| obj == intersection.first})
@@ -70,7 +70,7 @@ if __FILE__ == $0
   pixels = RayTracer.render
 
   pixels.each_with_index do |pix_arr, i|
-    pix_arr.each_with_index do |pix, j| 
+    pix_arr.each_with_index do |pix, j|
       draw = Draw.new
       draw.fill = Pixel.new(
         pix.x * QuantumRange,
