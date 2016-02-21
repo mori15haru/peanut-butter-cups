@@ -2,12 +2,13 @@ require './colour'
 require './quadratic_equation'
 
 class Sphere
-  attr_accessor :colour
+  attr_accessor :colour, :centre, :reflectivity
 
   def initialize(centre)
     @colour = Colour.new(Colour::BLUE)
     @centre = Vec.new(centre)
-    @r = 10
+    @r = 50
+    @reflectivity = 0.8
   end
 
   def intersects(ray)
@@ -35,6 +36,5 @@ class Sphere
 
     QuadraticEquation::Sphere::solve_temp(a,b,c)
   end
-
 
 end

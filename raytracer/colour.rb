@@ -2,10 +2,11 @@ require './vector'
 
 class Colour
 
-  BLACK = [0,0,0]
-  WHITE = [1,1,1]
-  BLUE  = [0,0,1]
-  GREY  = [192/255.0,192/255.0,192/255.0]
+  BLACK = [0.0, 0.0, 0.0]
+  WHITE = [1.0, 1.0, 1.0]
+  RED   = [1.0, 0.0, 0.0]
+  BLUE  = [0.0, 0.0, 1.0]
+  GREY  = [192.0/255.0,192.0/255.0,192.0/255.0]
 
   def self.new(rgb)
     return Vec.new(rgb)

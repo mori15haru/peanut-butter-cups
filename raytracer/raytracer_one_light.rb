@@ -16,12 +16,13 @@ class RayTracer
   W = 400
   H = 400
   MAX_RAY_DEPTH = 5
+
   BACKGROUND = Colour.new(Colour::GREY)
   SHADOW = Colour.new(Colour::BLACK)
+  ENOUGH = Colour.new(Colour::RED)
 
   @@objects = [
     Sphere.new([100,100,100]),
-    Sphere.new([50,50,50]),
     Sphere.new([-100,100,100])
   ]
 
@@ -33,38 +34,43 @@ class RayTracer
     @@pixels.each_with_index do |pix_arr, i|
       pix_arr.each_index do |j|
         ray = Ray.pixel_ray(j-W/2, -i+H/2)
-        @@pixels[i][j] = ray_tracer(ray)
+        @@pixels[i][j] = trace(ray, 0)
       end
     end
 
     return @@pixels
   end
 
-  def self.ray_tracer(ray)
-    intersection = ray.intersects(@@objects)
+  def self.trace(ray, depth, sphere = nil)
+     
+    return ENOUGH if !valid_depth
+    
+    others = @@objects.reject { |obj| obj == sphere }
+    hit    = ray.intersects(others)
+  
+    return BACKGROUND if !hit
 
-    if intersection
-      shadow_ray = Ray.get(intersection.last, OneLight.org)
-      temp = shadow_ray.in_shadow_temp(intersection.first)
-      if temp != nil && temp > 0
-        return SHADOW
-      elsif !shadow_ray.in_shadow?(@@objects.reject{|obj| obj == intersection.first})
-        return intersection.first.colour * OneLight::intensity
-      else
-        return SHADOW
-      end
+    if hit.reflective?
+      return trace(hit.reflected_ray, next_depth, hit.obj) * hit.reflectivity + (hit.colour) * (1 - hit.reflectivity)
+    else
+      return SHADOW if hit.in_shadow?(others)
+      return hit.colour
     end
 
-    return BACKGROUND
+  end 
+
+  private
+
+  def self.valid_depth
+    lambda { depth > MAX_RAY_DEPTH }
+  end 
+  
+  def self.next_depth
+    lambda { depth + 1 }
   end
 
 end
 
-=begin
-if __FILE__ == $0
-  RayTracer.render
-end
-=end
 if __FILE__ == $0
   image = Image.new(400, 400)
   pixels = RayTracer.render
@@ -82,6 +88,6 @@ if __FILE__ == $0
     end
   end
 
-  image.write('result.jpg')
+  image.write('result.png')
 end
 

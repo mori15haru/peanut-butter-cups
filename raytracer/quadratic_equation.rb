@@ -1,5 +1,7 @@
 module QuadraticEquation
   module Sphere
+    FRONT = -1
+    BACK = 1
 
     def self.real_solutions(a,b,d)
       t1 = (-b + Math::sqrt(d))/a
@@ -46,30 +48,20 @@ module QuadraticEquation
         return nil
       end
 
-      t1, t2 = self.real_solutions(a,b,d)
-      if t1 != t2
-        if t1 < 0 && t2 > 0
-          negative = t1
-          positive = t2
-          if -negative < positive
-            return positive
-          end
-        elsif t1 > 0 && t2 < 0
-          negative = t2
-          positive = t1
-          if -negative < positive
-            return positive
-          end
-        elsif t1 > 0 && t2 >0
-          return 1
-        elsif [t1, t2].sort.min == 0
-          return 1
+      t1, t2 = self.real_solutions(a,b,d).sort
+      return FRONT if t1 == t2
+
+      if t1 < 0 && t2 > 0
+        if -t1 < t2
+          return BACK
+        else
+          return FRONT
         end
+      elsif t1 >= 0
+        return BACK
+      else
+        return FRONT
       end
-
-      return nil
     end
-
-
   end
 end
