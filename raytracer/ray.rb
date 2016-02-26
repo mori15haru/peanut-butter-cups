@@ -10,7 +10,7 @@ class Intersection
   end
 
   def reflective?
-    @obj.reflectivity > 0
+    @obj.reflectivity.arr.any? { |e| e > 0 }
   end
 
   def reflectivity
@@ -22,7 +22,8 @@ class Intersection
   end
 
   def reflected_ray
-    dir = ray.dir - normal * 2.0 * (normal.inner_prod(ray.dir))
+    dir = normal * normal.inner_prod(shadow_ray.dir) * 2.0 - shadow_ray.dir
+    #dir = ray.dir - normal * 2.0 * (normal.inner_prod(ray.dir))
     Ray.new(point, dir)
   end
 

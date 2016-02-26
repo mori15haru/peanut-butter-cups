@@ -1,6 +1,6 @@
 class OneLight
   def self.org
-    Vec.new([200,200,200])
+    Vec.new([0,500,-200])
   end
 
   def self.intensity
