@@ -21,14 +21,16 @@ class RayTracer
   BACKGROUND = Colour.new(Colour::GREY)
   SHADOW     = Colour.new(Colour::BLACK)
   RED        = Colour.new(Colour::RED)
+  GREEN      = Colour.new(Colour::GREEN)
   BLUE       = Colour.new(Colour::BLUE)
   BRIGHT     = Colour.new(Colour::BRIGHT) 
   # Sphere#initialize(centre, r, colour, reflectivity, material)
   # @ka, @kr, @kd, @ks = material
   # One light at Vec.new([0,300,200])
   @@objects = [
-    Sphere.new([200,100,400], 50, BLUE, [0.5,0.5,0.2,0.8]),
-    Sphere.new([-200,100,600], 200, RED, [0.6,0.7,0.2,0.4]),
+    Sphere.new([200,000,400], 50, BLUE, [0.5,0.5,0.1,0.8]),
+    Sphere.new([0,-200,400], 50, GREEN, [0.5,0.5,0.1,0.8]),
+    Sphere.new([-200,100,600], 200, RED, [0.6,0.7,0.1,0.4]),
   ]
 
   @@pixels = Array.new(W) {
@@ -56,7 +58,7 @@ class RayTracer
     return colour + SHADOW if !(depth < MAX_RAY_DEPTH)
 
     id = [hit.normal.inner_prod(hit.shadow_ray.dir), 0].max
-    is = [(-ray.dir.inner_prod(hit.reflected_ray.dir))**8, 0].max
+    is = [(-ray.dir.inner_prod(hit.reflected_ray.dir))**7, 0].max
 
     colour = colour + hit.colour * hit.obj.ka
     
