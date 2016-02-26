@@ -1,4 +1,4 @@
-- [x] master
-- [x] feature/use-gosu
-- [x] feature/one-light
-- [x] feature/add-reflection`
+- master
+- feature/use-gosu
+- feature/one-light
+- feature/add-reflection
