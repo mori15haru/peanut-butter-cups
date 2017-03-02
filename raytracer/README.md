@@ -1,3 +1,3 @@
 ##Run
-```ruby raytracer_ambient.rb```
+```ruby raytracer_one_light.rb```
 
