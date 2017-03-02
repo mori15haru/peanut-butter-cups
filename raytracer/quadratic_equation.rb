@@ -29,5 +29,47 @@ module QuadraticEquation
 
       solve_even(a,b,c)
     end
+
+    def self.solve_temp(p,q,r)
+      c = p.square_length - r**2
+      b = p.inner_prod(q)
+      a = q.square_length
+
+      solve_even_temp(a,b,c)
+    end
+
+    def self.solve_even_temp(a,b,c)
+      # is 'nil' possible???
+      d = b**2 - a*c
+
+      if a == 0 || d < 0
+        return nil
+      end
+
+      t1, t2 = self.real_solutions(a,b,d)
+      if t1 != t2
+        if t1 < 0 && t2 > 0
+          negative = t1
+          positive = t2
+          if -negative < positive
+            return positive
+          end
+        elsif t1 > 0 && t2 < 0
+          negative = t2
+          positive = t1
+          if -negative < positive
+            return positive
+          end
+        elsif t1 > 0 && t2 >0
+          return 1
+        elsif [t1, t2].sort.min == 0
+          return 1
+        end
+      end
+
+      return nil
+    end
+
+
   end
 end

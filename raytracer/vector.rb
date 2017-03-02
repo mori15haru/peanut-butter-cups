@@ -31,14 +31,14 @@ class Vec
   end
   # A/k
   def /(other)
-    Vec.new(arr.map{|e| e/other.to_f})
+    Vec.new(arr.map{|e| e/(other.to_f)})
   end
   # |A|
   def abs
     Math::sqrt(square_length)
   end
   alias_method :length, :abs
-  # A .* B
+  # A . B
   def inner_prod(other)
     arr.zip(other.arr).map{|i,j| i*j}.inject(:+)
   end
@@ -53,5 +53,9 @@ class Vec
   # |A|**2
   def square_length
     inner_prod(self)
+  end
+  # A/|A|
+  def normalise
+    self / self.abs
   end
 end

@@ -3,29 +3,26 @@ require 'rmagick'
 require './colour'
 require './sphere'
 require './ray'
+require './one_light'
 
 include Magick
 
 ###################################
-# Ambient light only
+# One light source
 ###################################
-
-class AmbientLight
-  def self.intensity
-    Colour.new([1.0,1.0,1.0])
-  end
-end
 
 class RayTracer
 
-  W = 200
-  H = 200
+  W = 400
+  H = 400
   MAX_RAY_DEPTH = 5
   BACKGROUND = Colour.new(Colour::GREY)
+  SHADOW = Colour.new(Colour::BLACK)
 
   @@objects = [
     Sphere.new([100,100,100]),
-    Sphere.new([50,50,50])
+    Sphere.new([50,50,50]),
+    Sphere.new([-100,100,100])
   ]
 
   @@pixels = Array.new(W) {
@@ -44,19 +41,32 @@ class RayTracer
   end
 
   def self.ray_tracer(ray)
-    object = ray.intersects(@@objects)
+    intersection = ray.intersects(@@objects)
 
-    if object
-      object.colour * AmbientLight::intensity
-    else
-      BACKGROUND * AmbientLight::intensity
+    if intersection
+      shadow_ray = Ray.get(intersection.last, OneLight.org)
+      temp = shadow_ray.in_shadow_temp(intersection.first)
+      if temp != nil && temp > 0
+        return SHADOW
+      elsif !shadow_ray.in_shadow?(@@objects.reject{|obj| obj == intersection.first})
+        return intersection.first.colour * OneLight::intensity
+      else
+        return SHADOW
+      end
     end
+
+    return BACKGROUND
   end
 
 end
 
+=begin
 if __FILE__ == $0
-  image = Image.new(200, 200)
+  RayTracer.render
+end
+=end
+if __FILE__ == $0
+  image = Image.new(400, 400)
   pixels = RayTracer.render
 
   pixels.each_with_index do |pix_arr, i|
@@ -74,3 +84,4 @@ if __FILE__ == $0
 
   image.write('result.jpg')
 end
+
